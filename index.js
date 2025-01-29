@@ -1,4 +1,4 @@
-const target = $(".pz-byline__text");
+const target = document.querySelector(".pz-byline__text");
 const hintsSelector = ".interactive-content > div > div > p:nth-child(6)";
 const hintsObject = {};
 const foundWords = document.querySelector(".sb-wordlist-items-pag");
