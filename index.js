@@ -101,7 +101,6 @@ function handleClick() {
   renderHints()
 }
 
-// Add this CSS to your page (or within a <style> tag)
 const style = document.createElement('style');
 style.textContent = `
 .hint-circle {
