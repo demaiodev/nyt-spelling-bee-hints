@@ -54,7 +54,7 @@ function renderHints() {
     circle.style.textAlign = "center";
     circle.style.lineHeight = "30px";
     circle.style.boxShadow = "0 1px 2px rgba(0, 0, 0, 0.2)";
-    circle.style.border = "1px solid #0f0f0f";
+    circle.style.border = "1px solid #ccc";
 
     const hintSubstring = document.createElement("span");
     hintSubstring.textContent = key.toUpperCase();
@@ -77,7 +77,7 @@ function renderCalculateButton() {
   calculateButton.style.borderRadius = "3px"; 
   calculateButton.style.backgroundColor = "#f9d924";
   calculateButton.style.color = "black"; 
-  calculateButton.style.border = "1px solid #0f0f0f"; 
+  calculateButton.style.border = "none"; 
   calculateButton.style.cursor = "pointer"; 
   calculateButton.classList.add("calculate-button"); 
   calculateButton.addEventListener("click", handleClick);
