@@ -9,29 +9,24 @@ const date = new Date().toLocaleDateString("en-ZA", {
 });
 const url = `https://www.nytimes.com/${date}/crosswords/spelling-bee-forum.html`;
 let displayObject = {};
-let styles = {
-  hintFontSize: "15px",
-  hintButtonMargin: "1em",
-  hintButtonText: "Check Hints",
-};
 
 fetch(url)
   .then((response) => response.text())
   .then((text) => {
     processHints(text);
     renderHints();
+    createHintsButton();
   });
 
 function processHints(text) {
-  const dom = new DOMParser().parseFromString(text, "text/html"); // make the text response into traversable html
-  let hints = dom.querySelector(hintsSelector).children; // get all the elements we need
+  const dom = new DOMParser().parseFromString(text, "text/html");
+  let hints = dom.querySelector(hintsSelector).children;
   hints = Array.from(hints).map((child) =>
     child.innerText.trim().replace(/(\r\n|\n|\r)/gm, "")
-  ); // trim all the whitespace and new lines
-  hints = hints.join(" ").split(" "); // transform into cleaned array; ex: ['do-10', 'ed-2', 'eg-1', ...]
-  hints = hints.map((hint) => hint.split("-")); // transform into a 2D array containing our data; ex [['do', 10], ['ed', 2], ['eg', 1]]
+  );
+  hints = hints.join(" ").split(" ");
+  hints = hints.map((hint) => hint.split("-"));
   hints.forEach((hint) => {
-    // transform it yet again into an object we can work with
     const key = hint[0];
     const value = +hint[1];
     hintsObject[key] = value;
@@ -40,14 +35,53 @@ function processHints(text) {
 }
 
 function renderHints() {
-  target.style.fontSize = styles.hintFontSize;
-  target.innerText = JSON.stringify(displayObject);
-  const hintCheckButton = document.createElement("button");
-  hintCheckButton.innerText = styles.hintButtonText;
-  hintCheckButton.style.marginLeft = styles.hintButtonMargin;
-  hintCheckButton.addEventListener("click", handleClick);
-  target.insertAdjacentElement("afterend", hintCheckButton);
-}
+    target.style.fontSize = "12px";
+    target.style.padding = "10px";
+    target.style.border = "1px solid #ccc";
+    target.style.borderRadius = "5px";
+    target.style.boxShadow = "0 2px 5px rgba(0, 0, 0, 0.1)";
+  
+    target.innerHTML = ""; 
+  
+    for (const key in displayObject) {
+      const circle = document.createElement("div");
+      circle.classList.add("hint-circle"); 
+      circle.style.display = "inline-block";
+      circle.style.width = "30px";
+      circle.style.height = "30px";
+      circle.style.borderRadius = "50%";
+      circle.style.margin = "5px";
+      circle.style.textAlign = "center";
+      circle.style.lineHeight = "30px";
+      circle.style.boxShadow = "0 1px 2px rgba(0, 0, 0, 0.1)";
+      circle.style.border = "1px solid #ccc";
+  
+      const hintSubstring = document.createElement("span");
+      hintSubstring.textContent = key.toUpperCase();
+      circle.appendChild(hintSubstring);
+  
+      const remainingCount = document.createElement("span");
+      remainingCount.style.display = "block";
+      remainingCount.textContent = displayObject[key];
+      circle.appendChild(remainingCount);
+  
+      target.appendChild(circle);
+    }
+  }
+
+  function createHintsButton() {
+    const hintCheckButton = document.createElement("button");
+    hintCheckButton.innerText = "Check Hints";
+    hintCheckButton.style.marginLeft = "1em";
+    hintCheckButton.style.padding = "8px 15px"; 
+    hintCheckButton.style.borderRadius = "3px"; 
+    hintCheckButton.style.backgroundColor = "#3498db";
+    hintCheckButton.style.color = "#fff"; 
+    hintCheckButton.style.border = "none"; 
+    hintCheckButton.style.cursor = "pointer"; 
+    hintCheckButton.addEventListener("click", handleClick);
+    target.insertAdjacentElement("afterend", hintCheckButton);
+  }
 
 function handleClick() {
   const obj = {};
@@ -63,5 +97,5 @@ function handleClick() {
       displayObject[key] = hintsObject[key] - obj[key];
     }
   });
-  target.innerText = JSON.stringify(displayObject);
+  renderHints()
 }
