@@ -15,7 +15,7 @@ fetch(url)
   .then((text) => {
     processHints(text);
     renderHints();
-    createHintsButton();
+    renderCalculateButton();
   });
 
 function processHints(text) {
@@ -35,53 +35,54 @@ function processHints(text) {
 }
 
 function renderHints() {
-    target.style.fontSize = "12px";
-    target.style.padding = "10px";
-    target.style.border = "1px solid #ccc";
-    target.style.borderRadius = "5px";
-    target.style.boxShadow = "0 2px 5px rgba(0, 0, 0, 0.1)";
-  
-    target.innerHTML = ""; 
-  
-    for (const key in displayObject) {
-      const circle = document.createElement("div");
-      circle.classList.add("hint-circle"); 
-      circle.style.display = "inline-block";
-      circle.style.width = "30px";
-      circle.style.height = "30px";
-      circle.style.borderRadius = "50%";
-      circle.style.margin = "5px";
-      circle.style.textAlign = "center";
-      circle.style.lineHeight = "30px";
-      circle.style.boxShadow = "0 1px 2px rgba(0, 0, 0, 0.1)";
-      circle.style.border = "1px solid #ccc";
-  
-      const hintSubstring = document.createElement("span");
-      hintSubstring.textContent = key.toUpperCase();
-      circle.appendChild(hintSubstring);
-  
-      const remainingCount = document.createElement("span");
-      remainingCount.style.display = "block";
-      remainingCount.textContent = displayObject[key];
-      circle.appendChild(remainingCount);
-  
-      target.appendChild(circle);
-    }
-  }
+  target.style.fontSize = "12px";
+  target.style.padding = "10px";
+  target.style.border = "1px solid #ccc";
+  target.style.borderRadius = "5px";
+  target.style.boxShadow = "0 2px 5px rgba(0, 0, 0, 0.2)";
 
-  function createHintsButton() {
-    const hintCheckButton = document.createElement("button");
-    hintCheckButton.innerText = "Check Hints";
-    hintCheckButton.style.marginLeft = "1em";
-    hintCheckButton.style.padding = "8px 15px"; 
-    hintCheckButton.style.borderRadius = "3px"; 
-    hintCheckButton.style.backgroundColor = "#3498db";
-    hintCheckButton.style.color = "#fff"; 
-    hintCheckButton.style.border = "none"; 
-    hintCheckButton.style.cursor = "pointer"; 
-    hintCheckButton.addEventListener("click", handleClick);
-    target.insertAdjacentElement("afterend", hintCheckButton);
+  target.innerHTML = ""; 
+
+  for (const key in displayObject) {
+    const circle = document.createElement("div");
+    circle.classList.add("hint-circle"); 
+    circle.style.display = "inline-block";
+    circle.style.width = "30px";
+    circle.style.height = "30px";
+    circle.style.borderRadius = "50%";
+    circle.style.margin = "5px";
+    circle.style.textAlign = "center";
+    circle.style.lineHeight = "30px";
+    circle.style.boxShadow = "0 1px 2px rgba(0, 0, 0, 0.2)";
+    circle.style.border = "1px solid #0f0f0f";
+
+    const hintSubstring = document.createElement("span");
+    hintSubstring.textContent = key.toUpperCase();
+    circle.appendChild(hintSubstring);
+
+    const remainingCount = document.createElement("span");
+    remainingCount.style.display = "block";
+    remainingCount.textContent = displayObject[key];
+    circle.appendChild(remainingCount);
+
+    target.appendChild(circle); 
   }
+}
+
+function renderCalculateButton() {
+  const calculateButton = document.createElement("button");
+  calculateButton.innerText = "Calculate";
+  calculateButton.style.marginLeft = "1em";
+  calculateButton.style.padding = "8px 15px"; 
+  calculateButton.style.borderRadius = "3px"; 
+  calculateButton.style.backgroundColor = "#f9d924";
+  calculateButton.style.color = "black"; 
+  calculateButton.style.border = "1px solid #0f0f0f"; 
+  calculateButton.style.cursor = "pointer"; 
+  calculateButton.classList.add("calculate-button"); 
+  calculateButton.addEventListener("click", handleClick);
+  target.insertAdjacentElement("afterend", calculateButton);
+}
 
 function handleClick() {
   const obj = {};
@@ -99,3 +100,25 @@ function handleClick() {
   });
   renderHints()
 }
+
+// Add this CSS to your page (or within a <style> tag)
+const style = document.createElement('style');
+style.textContent = `
+.hint-circle {
+  transition: background-color 0.3s ease-in-out; 
+}
+
+.hint-circle:hover {
+  background-color: #f9d924; /* Yellow hover color */
+  cursor: pointer;
+}
+
+.calculate-button {
+  transition: all 0.15s ease-in-out; 
+}
+
+.calculate-button:hover {
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15); 
+}
+`;
+document.head.appendChild(style);
