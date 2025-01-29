@@ -9,15 +9,20 @@ const date = new Date().toLocaleDateString('en-ZA', {
 })
 const url = `https://www.nytimes.com/${date}/crosswords/spelling-bee-forum.html`
 let displayObject = {};
+let styles = {
+    hintFontSize: '15px',
+    hintButtonMargin: '1em',
+    hintButtonText: 'Check Hints'
+}
 
 fetch(url).then((response) =>
     response.text())
     .then((text) => {
-        processHintData(text)
+        processHintPageData(text)
         renderHints()
     }); 
 
-function processHintData(text) {
+function processHintPageData(text) {
     const dom = new DOMParser().parseFromString(text, "text/html") // make the text response into traversable html
     let hints = dom.querySelector(hintsSelector).children // get all the elements we need
     hints = Array.from(hints).map(child => child.innerText.trim().replace(/(\r\n|\n|\r)/gm, "")) // trim all the whitespace and new lines
@@ -32,11 +37,11 @@ function processHintData(text) {
 }
 
 function renderHints() {
-    target.style.fontSize = '15px'
+    target.style.fontSize = styles.hintFontSize
     target.innerText = JSON.stringify(displayObject)
     const hintCheckButton = document.createElement("button");
-    hintCheckButton.innerText = 'Check Hints';
-    hintCheckButton.style.marginLeft = '1em'
+    hintCheckButton.innerText = styles.hintButtonText;
+    hintCheckButton.style.marginLeft = styles.hintButtonMargin
     target.insertAdjacentElement("afterend", hintCheckButton);
     hintCheckButton.addEventListener('click', handleClick)
 }
