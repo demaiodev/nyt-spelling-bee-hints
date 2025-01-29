@@ -36,6 +36,7 @@ function renderHints() {
     target.innerText = JSON.stringify(displayObject)
     const hintCheckButton = document.createElement("button");
     hintCheckButton.innerText = 'Check Hints';
+    hintCheckButton.style.marginLeft = '1em'
     target.insertAdjacentElement("afterend", hintCheckButton);
     hintCheckButton.addEventListener('click', handleClick)
 }
@@ -43,14 +44,15 @@ function renderHints() {
 function handleClick() {
     const obj = {}
     foundWords.childNodes.forEach(word => {
+        // count occurrences of substrings we have found
         const subStr = word.innerText.substring(0, 2).toLowerCase()
         if (!obj[subStr]) 
             obj[subStr] = 1
         else 
             obj[subStr] += 1
-        
     })
     Object.keys(obj).forEach(key => {
+        // subtract occurrences of substrings from total 
         if (displayObject[key]) {
             displayObject[key] = hintsObject[key] - obj[key]
         }
