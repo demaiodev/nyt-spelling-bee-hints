@@ -16,10 +16,6 @@ fetch(url)
   .then((text) => {
     processHints(text);
     renderHints();
-    target.insertAdjacentElement(
-      "afterend",
-      Button("Check", calculateHints, true)
-    );
     target.insertAdjacentElement("afterend", Button("Toggle", hideHints));
   });
 
@@ -58,12 +54,11 @@ function renderHints() {
   }
 }
 
-function Button(text, handlerFn, primary = false) {
+function Button(text, fn) {
   const button = document.createElement("button");
   button.innerText = text;
-  if (primary) button.style.backgroundColor = "#f9d924";
   button.classList.add("button", "hive-action");
-  button.addEventListener("click", handlerFn);
+  button.addEventListener("click", fn);
   return button;
 }
 
@@ -90,7 +85,7 @@ function calculateHints() {
 
 document
   .querySelector(".hive-action__submit")
-  .addEventListener("click", (e) => {
+  .addEventListener("click", () => {
     calculateHints();
   });
 
@@ -133,10 +128,7 @@ style.textContent = `
 .pz-byline__text {
   transition: opacity 0.3s ease-in-out;
   font-size: 12px !important;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  padding: 1em;
   margin-right: 1em;
 }
 `;
