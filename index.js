@@ -44,6 +44,11 @@ function processHints(text) {
     .textContent.split("PANGRAMS:")[1]
     .trim()
     .replace(/(\r\n|\n|\r)/gm, "");
+
+  let div = document.createElement("div")
+  div.textContent = `Total Pangrams: ${totalPangrams}`
+  div.style.paddingTop = '1em'
+  document.querySelector("h2").insertAdjacentElement('afterend', div)
 }
 
 function renderHints() {
@@ -132,7 +137,6 @@ style.textContent = `
 .pz-byline__text {
   transition: opacity 0.3s ease-in-out;
   font-size: 12px !important;
-  padding: 1em;
   margin-right: 1em;
 }
 `;
