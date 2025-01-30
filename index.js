@@ -2,12 +2,12 @@ const pangramSelector = ".interactive-content > div > div > p:nth-child(3)";
 const hintsSelector = ".interactive-content > div > div > p:nth-child(6)";
 const foundWords = document.querySelector(".sb-wordlist-items-pag");
 const hintsContainer = document.querySelector(".pz-byline__text");
-const url = `https://www.nytimes.com/${date}/crosswords/spelling-bee-forum.html`;
 const date = new Date().toLocaleDateString("en-ZA", {
   year: "numeric",
   month: "2-digit",
   day: "2-digit",
 });
+const url = `https://www.nytimes.com/${date}/crosswords/spelling-bee-forum.html`;
 const hintsObject = {};
 
 let displayObject = {};
@@ -44,11 +44,19 @@ function processHints(text) {
     .trim()
     .replace(/(\r\n|\n|\r)/gm, "");
 
-  const div = document.createElement("div")
-  div.textContent = `Total Pangrams: ${totalPangrams}`
-  div.style.paddingTop = '1em'
-  document.querySelector("h2").insertAdjacentElement('afterend', div)
-  hintsContainer.insertAdjacentElement("afterend", Button("Toggle", hideHints));
+  const containerDiv = document.createElement("div");
+  containerDiv.style.display = "flex";
+  containerDiv.style.paddingTop = "1em";
+  containerDiv.style.flexWrap = "wrap";
+
+  const div = document.createElement("div");
+  div.style.alignSelf = "center";
+  div.textContent = `Total Pangrams: ${totalPangrams}`;
+
+  containerDiv.appendChild(Button("Toggle", hideHints));
+  containerDiv.appendChild(div);
+
+  document.querySelector("h2").appendChild(containerDiv);
 }
 
 function renderHints() {
@@ -105,10 +113,12 @@ function calculateHints() {
 }
 
 function attachEventListeners() {
-  document.querySelector(".hive-action__submit").addEventListener("click", () => {
-    calculateHints();
-  });
-  
+  document
+    .querySelector(".hive-action__submit")
+    .addEventListener("click", () => {
+      calculateHints();
+    });
+
   document.querySelector("body").addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
       setTimeout(() => {
@@ -117,8 +127,6 @@ function attachEventListeners() {
     }
   });
 }
-
-
 
 const style = document.createElement("style");
 style.textContent = `
