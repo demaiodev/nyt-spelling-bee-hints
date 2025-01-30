@@ -18,9 +18,9 @@ fetch(url)
     renderHints();
     target.insertAdjacentElement(
       "afterend",
-      Button("Calculate", handleClick, true)
+      Button("Check", calculateHints, true)
     );
-    target.insertAdjacentElement("afterend", Button("Show/Hide", hideHints));
+    target.insertAdjacentElement("afterend", Button("Toggle", hideHints));
   });
 
 function processHints(text) {
@@ -40,30 +40,19 @@ function processHints(text) {
 }
 
 function renderHints() {
-  target.style.fontSize = "12px";
-  target.style.padding = "10px";
-  target.style.border = "1px solid #ccc";
-  target.style.borderRadius = "5px";
-  target.style.boxShadow = "0 2px 5px rgba(0, 0, 0, 0.2)";
   target.innerHTML = "";
   for (const key in displayObject) {
     const circle = document.createElement("div");
     circle.classList.add("hint-circle");
-    circle.style.display = "inline-block";
-    circle.style.width = "30px";
-    circle.style.height = "30px";
-    circle.style.borderRadius = "50%";
-    circle.style.margin = "5px";
-    circle.style.textAlign = "center";
-    circle.style.lineHeight = "30px";
-    circle.style.boxShadow = "0 1px 2px rgba(0, 0, 0, 0.2)";
-    circle.style.border = "1px solid #ccc";
+
     const hintSubstring = document.createElement("span");
     hintSubstring.textContent = key.toUpperCase();
     circle.appendChild(hintSubstring);
+
     const remainingCount = document.createElement("span");
     remainingCount.style.display = "block";
     remainingCount.textContent = displayObject[key];
+
     circle.appendChild(remainingCount);
     target.appendChild(circle);
   }
@@ -72,14 +61,8 @@ function renderHints() {
 function Button(text, handlerFn, primary = false) {
   const button = document.createElement("button");
   button.innerText = text;
-  button.style.marginLeft = "1em";
-  button.style.padding = "8px 15px";
-  button.style.borderRadius = "3px";
-  button.style.color = "black";
-  button.style.border = "none";
-  button.style.cursor = "pointer";
   if (primary) button.style.backgroundColor = "#f9d924";
-  button.classList.add("button");
+  button.classList.add("button", "hive-action");
   button.addEventListener("click", handlerFn);
   return button;
 }
@@ -90,16 +73,14 @@ function hideHints() {
   hide = !hide;
 }
 
-function handleClick() {
+function calculateHints() {
   const obj = {};
   foundWords.childNodes.forEach((word) => {
-    // count occurrences of substrings we have found
     const subStr = word.innerText.substring(0, 2).toLowerCase();
     if (!obj[subStr]) obj[subStr] = 1;
     else obj[subStr] += 1;
   });
   Object.keys(obj).forEach((key) => {
-    // subtract occurrences of substrings from total
     if (displayObject[key]) {
       displayObject[key] = hintsObject[key] - obj[key];
     }
@@ -111,6 +92,15 @@ const style = document.createElement("style");
 style.textContent = `
 .hint-circle {
   transition: background-color 0.3s ease-in-out; 
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin: 5px;
+  text-align: center;
+  line-height: 30px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  border: 1px solid #ccc;
 }
 
 .hint-circle:hover {
@@ -128,6 +118,12 @@ style.textContent = `
 
 .pz-byline__text {
   transition: opacity 0.3s ease-in-out;
+  font-size: 12px !important;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  margin-right: 1em;
 }
 `;
 document.head.appendChild(style);
