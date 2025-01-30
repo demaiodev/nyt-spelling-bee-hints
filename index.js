@@ -17,7 +17,7 @@ fetch(url)
   .then((text) => {
     processHints(text);
     renderHints();
-    target.insertAdjacentElement("afterend", Button("Toggle", hideHints));
+    attachEventListeners();
   });
 
 function processHints(text) {
@@ -45,10 +45,11 @@ function processHints(text) {
     .trim()
     .replace(/(\r\n|\n|\r)/gm, "");
 
-  let div = document.createElement("div")
+  const div = document.createElement("div")
   div.textContent = `Total Pangrams: ${totalPangrams}`
   div.style.paddingTop = '1em'
   document.querySelector("h2").insertAdjacentElement('afterend', div)
+  target.insertAdjacentElement("afterend", Button("Toggle", hideHints));
 }
 
 function renderHints() {
@@ -75,6 +76,7 @@ function Button(text, fn) {
   button.innerText = text;
   button.classList.add("button", "hive-action");
   button.addEventListener("click", fn);
+  
   return button;
 }
 
@@ -86,31 +88,40 @@ function hideHints() {
 
 function calculateHints() {
   const obj = {};
+
   foundWords.childNodes.forEach((word) => {
     const subStr = word.innerText.substring(0, 2).toLowerCase();
     if (!obj[subStr]) obj[subStr] = 1;
     else obj[subStr] += 1;
   });
+
   Object.keys(obj).forEach((key) => {
     if (displayObject[key]) {
       displayObject[key] = hintsObject[key] - obj[key];
       if (displayObject[key] === 0) delete displayObject[key];
     }
   });
+
   renderHints();
 }
 
-document.querySelector(".hive-action__submit").addEventListener("click", () => {
-  calculateHints();
-});
+function attachEventListeners() {
+  // Handle button click
+  document.querySelector(".hive-action__submit").addEventListener("click", () => {
+    calculateHints();
+  });
+  
+  // Handle Enter keydown event, keyup didn't work and the setTimeout is there because of reasons
+  document.querySelector("body").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      setTimeout(() => {
+        calculateHints();
+      }, "0");
+    }
+  });
+}
 
-document.querySelector("body").addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    setTimeout(() => {
-      calculateHints();
-    }, "0");
-  }
-});
+
 
 const style = document.createElement("style");
 style.textContent = `
