@@ -88,6 +88,20 @@ function calculateHints() {
   renderHints();
 }
 
+document
+  .querySelector(".hive-action__submit")
+  .addEventListener("click", (e) => {
+    calculateHints();
+  });
+
+document.querySelector("body").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    setTimeout(() => {
+      calculateHints();
+    }, "0");
+  }
+});
+
 const style = document.createElement("style");
 style.textContent = `
 .hint-circle {
