@@ -78,6 +78,7 @@ function calculateHints() {
   Object.keys(obj).forEach((key) => {
     if (displayObject[key]) {
       displayObject[key] = hintsObject[key] - obj[key];
+      if (displayObject[key] === 0) delete displayObject[key]
     }
   });
   renderHints();
