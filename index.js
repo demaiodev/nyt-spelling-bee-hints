@@ -100,7 +100,6 @@ document.querySelector("body").addEventListener("keydown", (e) => {
 const style = document.createElement("style");
 style.textContent = `
 .hint-circle {
-  transition: background-color 0.3s ease-in-out; 
   display: inline-block;
   width: 30px;
   height: 30px;
@@ -110,11 +109,6 @@ style.textContent = `
   line-height: 30px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
   border: 1px solid #ccc;
-}
-
-.hint-circle:hover {
-  background-color: #f9d924; /* Yellow hover color */
-  cursor: pointer;
 }
 
 .button {
