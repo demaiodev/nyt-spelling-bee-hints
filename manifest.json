@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
     "name": "Hintify",
-    "version": "1.0",
-    "description": "Do you really stink at the spelling bee? So do I! Let me try to help you.",
+    "version": "1.0.0",
+    "description": "Displays & keeps track of the Hints for today's NYT Spelling Bee game.",
     "content_scripts": [
       {
         "matches": ["https://www.nytimes.com/puzzles/spelling-bee"],
