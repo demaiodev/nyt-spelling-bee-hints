@@ -1,14 +1,15 @@
-const target = document.querySelector(".pz-byline__text");
-const hintsSelector = ".interactive-content > div > div > p:nth-child(6)";
 const pangramSelector = ".interactive-content > div > div > p:nth-child(3)";
-const hintsObject = {};
+const hintsSelector = ".interactive-content > div > div > p:nth-child(6)";
 const foundWords = document.querySelector(".sb-wordlist-items-pag");
+const hintsContainer = document.querySelector(".pz-byline__text");
+const url = `https://www.nytimes.com/${date}/crosswords/spelling-bee-forum.html`;
 const date = new Date().toLocaleDateString("en-ZA", {
   year: "numeric",
   month: "2-digit",
   day: "2-digit",
 });
-const url = `https://www.nytimes.com/${date}/crosswords/spelling-bee-forum.html`;
+const hintsObject = {};
+
 let displayObject = {};
 let hide = true;
 
@@ -23,7 +24,6 @@ fetch(url)
 function processHints(text) {
   const dom = new DOMParser().parseFromString(text, "text/html");
 
-  // Transform 2 letter hints into an object
   let hints = dom.querySelector(hintsSelector).children;
   hints = Array.from(hints)
     .map((child) => child.innerText.trim().replace(/(\r\n|\n|\r)/gm, ""))
@@ -38,7 +38,6 @@ function processHints(text) {
 
   displayObject = { ...hintsObject };
 
-  // Find total Pangrams
   const totalPangrams = dom
     .querySelector(pangramSelector)
     .textContent.split("PANGRAMS:")[1]
@@ -49,11 +48,11 @@ function processHints(text) {
   div.textContent = `Total Pangrams: ${totalPangrams}`
   div.style.paddingTop = '1em'
   document.querySelector("h2").insertAdjacentElement('afterend', div)
-  target.insertAdjacentElement("afterend", Button("Toggle", hideHints));
+  hintsContainer.insertAdjacentElement("afterend", Button("Toggle", hideHints));
 }
 
 function renderHints() {
-  target.innerHTML = "";
+  hintsContainer.innerHTML = "";
   for (const key in displayObject) {
     const circle = document.createElement("div");
     circle.classList.add("hint-circle");
@@ -67,7 +66,7 @@ function renderHints() {
     remainingCount.textContent = displayObject[key];
 
     circle.appendChild(remainingCount);
-    target.appendChild(circle);
+    hintsContainer.appendChild(circle);
   }
 }
 
@@ -76,13 +75,13 @@ function Button(text, fn) {
   button.innerText = text;
   button.classList.add("button", "hive-action");
   button.addEventListener("click", fn);
-  
+
   return button;
 }
 
 function hideHints() {
-  if (hide) target.style.opacity = 0;
-  else target.style.opacity = 1;
+  if (hide) hintsContainer.style.opacity = 0;
+  else hintsContainer.style.opacity = 1;
   hide = !hide;
 }
 
@@ -106,12 +105,10 @@ function calculateHints() {
 }
 
 function attachEventListeners() {
-  // Handle button click
   document.querySelector(".hive-action__submit").addEventListener("click", () => {
     calculateHints();
   });
   
-  // Handle Enter keydown event, keyup didn't work and the setTimeout is there because of reasons
   document.querySelector("body").addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
       setTimeout(() => {
