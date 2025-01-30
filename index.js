@@ -1,5 +1,6 @@
 const target = document.querySelector(".pz-byline__text");
 const hintsSelector = ".interactive-content > div > div > p:nth-child(6)";
+const pangramSelector = ".interactive-content > div > div > p:nth-child(3)";
 const hintsObject = {};
 const foundWords = document.querySelector(".sb-wordlist-items-pag");
 const date = new Date().toLocaleDateString("en-ZA", {
@@ -21,18 +22,28 @@ fetch(url)
 
 function processHints(text) {
   const dom = new DOMParser().parseFromString(text, "text/html");
+
+  // Transform 2 letter hints into an object
   let hints = dom.querySelector(hintsSelector).children;
-  hints = Array.from(hints).map((child) =>
-    child.innerText.trim().replace(/(\r\n|\n|\r)/gm, "")
-  );
-  hints = hints.join(" ").split(" ");
-  hints = hints.map((hint) => hint.split("-"));
-  hints.forEach((hint) => {
-    const key = hint[0];
-    const value = +hint[1];
-    hintsObject[key] = value;
-  });
+  hints = Array.from(hints)
+    .map((child) => child.innerText.trim().replace(/(\r\n|\n|\r)/gm, ""))
+    .join(" ")
+    .split(" ")
+    .map((hint) => hint.split("-"))
+    .forEach((hint) => {
+      const key = hint[0];
+      const value = +hint[1];
+      hintsObject[key] = value;
+    });
+
   displayObject = { ...hintsObject };
+
+  // Find total Pangrams
+  const totalPangrams = dom
+    .querySelector(pangramSelector)
+    .textContent.split("PANGRAMS:")[1]
+    .trim()
+    .replace(/(\r\n|\n|\r)/gm, "");
 }
 
 function renderHints() {
@@ -78,17 +89,15 @@ function calculateHints() {
   Object.keys(obj).forEach((key) => {
     if (displayObject[key]) {
       displayObject[key] = hintsObject[key] - obj[key];
-      if (displayObject[key] === 0) delete displayObject[key]
+      if (displayObject[key] === 0) delete displayObject[key];
     }
   });
   renderHints();
 }
 
-document
-  .querySelector(".hive-action__submit")
-  .addEventListener("click", () => {
-    calculateHints();
-  });
+document.querySelector(".hive-action__submit").addEventListener("click", () => {
+  calculateHints();
+});
 
 document.querySelector("body").addEventListener("keydown", (e) => {
   if (e.key === "Enter") {
