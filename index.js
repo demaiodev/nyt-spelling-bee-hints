@@ -2,11 +2,27 @@ const pangramSelector = ".interactive-content > div > div > p:nth-child(3)";
 const hintsSelector = ".interactive-content > div > div > p:nth-child(6)";
 const foundWords = document.querySelector(".sb-wordlist-items-pag");
 const hintsContainer = document.querySelector(".pz-byline__text");
-const date = new Date().toLocaleDateString("en-ZA", {
-  year: "numeric",
-  month: "2-digit",
-  day: "2-digit",
-});
+let date;
+
+let urlDate = window.location.href.split("/");
+
+if (isNaN(Date.parse(new Date(urlDate[urlDate.length - 1])))) {
+  // this is the normal scenario where we get today's date
+  date = getDate();
+} else {
+  // we're visiting a page where the date is set as the path in the url
+  date = getDate(urlDate[urlDate.length - 1]);
+}
+
+function getDate(str = null) {
+  let date = new Date(str || new Date()).toLocaleDateString("en-ZA", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
+  return date;
+}
+
 const url = `https://www.nytimes.com/${date}/crosswords/spelling-bee-forum.html`;
 const hintsObject = {};
 
@@ -143,11 +159,11 @@ style.textContent = `
 }
 
 .button {
-  transition: all 0.15s ease-in-out; 
+  transition: all 0.15s ease-in-out;
 }
 
 .button:hover {
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15); 
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
 }
 
 .pz-byline__text {
