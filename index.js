@@ -54,11 +54,8 @@ function processHints(text) {
 
   displayObject = { ...hintsObject };
 
-  const totalPangrams = dom
-    .querySelector(pangramSelector)
-    .textContent.split("PANGRAMS:")[1]
-    .trim()
-    .replace(/(\r\n|\n|\r)/gm, "");
+  let hintArr = dom.querySelector(pangramSelector).textContent.split(":");
+  const totalPangrams = hintArr[hintArr.length - 1].trim();
 
   const containerDiv = document.createElement("div");
   containerDiv.style.display = "flex";
@@ -72,7 +69,7 @@ function processHints(text) {
   containerDiv.appendChild(Button("Toggle", hideHints));
   containerDiv.appendChild(div);
 
-  document.querySelector("h2").appendChild(containerDiv);
+  document.querySelector("#portal-game-header").appendChild(containerDiv);
 }
 
 function renderHints() {
