@@ -152,14 +152,16 @@ const style = document.createElement("style");
 style.textContent = `
 .hint-circle {
   display: inline-block;
-  width: 32px;
-  height: 32px;
+  width: 2rem;
+  height: 2rem;
   border-radius: 50%;
   margin: 5px;
   text-align: center;
-  line-height: 32px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  line-height: 2rem;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
   border: 1px solid #ccc;
+  font-size: 1rem;
+  font-weight: bold;
 }
 
 .button {
