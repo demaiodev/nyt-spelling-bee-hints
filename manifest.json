@@ -5,7 +5,7 @@
     "description": "Displays & keeps track of the Hints for today's NYT Spelling Bee game.",
     "content_scripts": [
       {
-        "matches": ["https://www.nytimes.com/puzzles/spelling-bee"],
+        "matches": ["https://www.nytimes.com/puzzles/spelling-bee/*"],
         "js": ["index.js"]
       }
     ]
