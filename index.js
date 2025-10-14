@@ -19,6 +19,7 @@ function getDate(str = null) {
     year: "numeric",
     month: "2-digit",
     day: "2-digit",
+    timeZone: "UTC"
   });
   return date;
 }
@@ -35,6 +36,12 @@ fetch(url)
     processHints(text);
     renderHints();
     attachEventListeners();
+
+    console.log(
+      `%c🧠🐝 Hintify Loaded! 🐝🧠%c\nBuzzing through hints for ${date} `,
+      "background: #ffde00; color: black; font-weight: bold; padding: 4px 8px; border-radius: 4px;",
+      "color: #888; font-style: italic;"
+    );
   });
 
 function processHints(text) {
@@ -145,12 +152,12 @@ const style = document.createElement("style");
 style.textContent = `
 .hint-circle {
   display: inline-block;
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   margin: 5px;
   text-align: center;
-  line-height: 30px;
+  line-height: 32px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
   border: 1px solid #ccc;
 }
@@ -165,7 +172,6 @@ style.textContent = `
 
 .pz-byline__text {
   transition: opacity 0.3s ease-in-out;
-  font-size: 12px !important;
   margin-right: 1em;
 }
 `;
